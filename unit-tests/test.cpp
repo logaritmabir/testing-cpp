@@ -2,9 +2,29 @@
 #include "../static-lib-funcs/math-funcs.h"
 
 int main(int argc, char** argv) {
-	::testing::InitGoogleTest(&argc, argv);
+	testing::InitGoogleTest(&argc, argv);
 	return RUN_ALL_TESTS();
 }
+
+class AddTest : public testing::TestWithParam<std::tuple<int32_t, int32_t, int64_t>> {};
+
+TEST_P(AddTest, ParameterizedTests) {
+	int32_t x = std::get<0>(GetParam());
+	int32_t y = std::get<1>(GetParam());
+	int64_t z = std::get<2>(GetParam());
+
+	EXPECT_EQ(z, add(x,y));
+}
+
+INSTANTIATE_TEST_CASE_P(
+	ParameterizedAddTests,
+	AddTest,
+	::testing::Values(
+		std::make_tuple(1,1,2),
+		std::make_tuple(1000, -150, 850),     
+		std::make_tuple(INT32_MAX, 0, INT32_MAX),   
+		std::make_tuple(INT32_MIN, 0, INT32_MIN)
+	));
 
 TEST(addTests, positiveNumbers) {
 	EXPECT_EQ(1025, add(1, 1024));
