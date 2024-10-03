@@ -26,6 +26,17 @@ INSTANTIATE_TEST_CASE_P(
 		std::make_tuple(INT32_MIN, 0, INT32_MIN)
 	));
 
+class MathTest : public ::testing::Test {
+protected:
+	Math instance;
+};
+
+TEST_F(MathTest, initialization) {
+	instance.setInputs(1024, 1024);
+	instance.add();
+	EXPECT_EQ(2048, instance.getResult());
+}
+
 TEST(addTests, positiveNumbers) {
 	EXPECT_EQ(1025, add(1, 1024));
 	EXPECT_EQ(2048, add(1024,1024));

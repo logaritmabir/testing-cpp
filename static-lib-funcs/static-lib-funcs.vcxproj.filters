@@ -15,17 +15,11 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="framework.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="math-funcs.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="static-lib-funcs.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="math-funcs.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
