@@ -1,11 +1,6 @@
 #include "pch.h"
 #include "../static-lib-funcs/math-funcs.h"
 
-int main(int argc, char** argv) {
-	testing::InitGoogleTest(&argc, argv);
-	return RUN_ALL_TESTS();
-}
-
 class AddTest : public testing::TestWithParam<std::tuple<int32_t, int32_t, int64_t>> {};
 
 TEST_P(AddTest, ParameterizedTests) {
@@ -26,15 +21,26 @@ INSTANTIATE_TEST_CASE_P(
 		std::make_tuple(INT32_MIN, 0, INT32_MIN)
 	));
 
-class MathTest : public ::testing::Test {
+class MathTests : public ::testing::Test {
 protected:
 	Math instance;
+
+	void SetUp() override {
+		int32_t x = 15;
+		int32_t y = 24;
+		instance.setInputs(x, y);
+	}
 };
 
-TEST_F(MathTest, initialization) {
+TEST_F(MathTests, initialization) {
 	instance.setInputs(1024, 1024);
 	instance.add();
 	EXPECT_EQ(2048, instance.getResult());
+}
+
+TEST_F(MathTests, baseConfig) {
+	instance.add();
+	EXPECT_EQ(39, instance.getResult());
 }
 
 TEST(addTests, positiveNumbers) {
@@ -64,9 +70,15 @@ TEST(addTests, zero) {
 
 TEST(addTests, overflow) {
 	EXPECT_EQ(INT32_MAX - 1, add(-1, INT32_MAX));
-	EXPECT_EQ(int64_t(int64_t(INT32_MAX)+ int64_t(1)), add(1, INT32_MAX));
+	EXPECT_EQ(int64_t(INT32_MAX) + int64_t(1), add(1, INT32_MAX));
 	EXPECT_EQ(2147483646, add(-1, INT32_MAX));
 	EXPECT_EQ(2147483648, add(1, INT32_MAX));
 	EXPECT_EQ(4294967294, add(INT32_MAX, INT32_MAX));
 	EXPECT_EQ(int64_t(INT32_MAX) + int64_t(INT32_MAX), add(INT32_MAX, INT32_MAX));
 }
+
+TEST(addTests, expect) {
+	EXPECT_PRED2(isEqual, 39+11, 17);
+	EXPECT_TRUE(isEqual(15, 16));
+}
+
